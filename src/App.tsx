@@ -1,33 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const onFetchPosts = async () => {
+  const response = await fetch('https://user-router-w3.vercel.app/api/posts')
+
+  if (response.ok) {
+  const data = await response.json()
+  console.log(data)
+  } else {
+    alert('Error fetching posts')
+  }
+
+  }
+
+  const onCreatePost = async () => {
+    const response = await fetch('https://user-router-w3.vercel.app/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: 'Nuevo post',
+        imageUrl: 'https://placeimg.com/200/200/animals',
+        description: 'Descripción del nuevo post'
+      })
+
+      
+    })
+    if (response.ok) {
+    const data = await response.json()
+    console.log(data)
+    } else {
+      alert('Error creating post')
+    }
+
+  }
+
+  const onDeletePost = async (id: number) => {
+    const response = await fetch(`https://user-router-w3.vercel.app/api/posts/` + id, {
+      method: 'DELETE',
+    })
+    if (response.ok) {
+    const data = await response.json()
+    console.log(data)
+    } else {
+      alert('Error deleting post')
+    }
+
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <button onClick={onFetchPosts}>Fetch Posts</button>
+      <button onClick={onCreatePost}>Create user</button>
+      <button onClick={() => onDeletePost(1771990751497)}>Delete user</button>
     </>
   )
 }
