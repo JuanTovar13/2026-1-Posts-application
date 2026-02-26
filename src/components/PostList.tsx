@@ -29,10 +29,11 @@ export const PostList = () => {
     const data = await response.json()
     console.log(data)
     setPosts(prevPosts => prevPosts.filter(post => post.id !== id))
+    window.location.reload()
     } else {
       alert('Error deleting post')
     }
-    window.location.reload()
+    
 
   }
 
